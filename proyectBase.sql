@@ -1,3 +1,4 @@
+drop database database_Proyect;
 CREATE DATABASE IF NOT EXISTS database_Proyect;
 
 use database_Proyect;
@@ -10,9 +11,9 @@ direccion VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Empleado(
-dni_Emple INT(8) NOT NULL PRIMARY KEY
+dni_Empleado INT(8) NOT NULL PRIMARY KEY,
 FOREIGN KEY (dni_Empleado) REFERENCES Persona (dni),
-fecha_ing INT(20) NOT NULL,
+fecha_ing INT(20) NOT NULL
 
 );
 
@@ -24,14 +25,14 @@ estadoCivil enum("CASADO","SOLTERO","DIVORCIADO")
 );
 
 CREATE TABLE IF NOT EXISTS Gerente(
-dni_ger INT(8) NOT NULL PRIMARY KEY,
+dni_Gerente INT(8) NOT NULL PRIMARY KEY,
 FOREIGN KEY (dni_Gerente) REFERENCES Empleado (dni_Empleado),
 comision INT(10)
 );
 
 CREATE TABLE IF NOT EXISTS Mucama(
 dni_Mucama INT(8) NOT NULL PRIMARY KEY,
-FOREIGN KEY (dni_Mucama) REFERENCES Empleado (dni_Empleado),
+FOREIGN KEY (dni_Mucama) REFERENCES Empleado (dni_Empleado)
 );
 
 CREATE TABLE IF NOT EXISTS Tipo(
@@ -58,6 +59,3 @@ dni_Cte INT(8) NOT NULL,
 FOREIGN KEY (dni_Cte) REFERENCES Cliente (dni_Cliente),
 FOREIGN KEY (nro_hab) REFERENCES Habitacion (nro_Habitacion)
 );
-
-
-
