@@ -19,7 +19,8 @@ VALUES
 
 INSERT INTO Mucama(dni_Mucama)
 VALUES
-(3);
+(3),
+(2);
 
 INSERT INTO Gerente(dni_Gerente,comision)
 VALUES
@@ -29,7 +30,7 @@ INSERT INTO Tipo(costo,descrip)
 VALUES
 (1000,'Griego'),
 (1500,'Romano'),
-(700,'Egipcio');
+(700,'Matrimonial');
 
 INSERT INTO Habitacion(dni_Muca,co_Tipo,cantCamas)
 VALUES
