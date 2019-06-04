@@ -1,44 +1,65 @@
 import java.sql.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 public class BaseJava {
+	private String driver;
+	private String url;
+	private String username;
+	private String password;
 
-	public BaseJava(String dir,String driver1){
-			String driver = driver1;
-    		String url = dir;
-    		String username = "root";
-    		String password = "root";
-    }
+	public BaseJava(String path) throws IOException{
+		Properties dbProps = new Properties();
+		try{
+			InputStream input = new FileInputStream(path+"database.properties");
+			dbProps.load(input);
+		}
+		catch(IOException e){
+			throw new IOException(e);
+		}
+		driver = dbProps.getProperty("driver");
+		url = dbProps.getProperty("url");
+		username = dbProps.getProperty("username");
+		password = dbProps.getProperty("password");
+	}
 
-    public Connection setUpConnection(String url,String driver) throws SQLException{
+  public Connection setUpConnection() throws SQLException{
+  	try{
+  		// Load database driver if not already loaded.
+  		Class.forName(this.driver);
+  		// Establish network connection to database.
+  		Connection connection =	DriverManager.getConnection(this.url,this.username,this.password);
+  		connection.setAutoCommit(false);
+  			return connection;
+      }
+      catch(ClassNotFoundException cnfe) {
+      	System.err.println("Error loading driver: " + cnfe);
+      	System.exit(1);
+      	return null;
+      }
+      catch(SQLException e){
+      	throw new SQLException(e);
+      }
+  }
+
+
+    public void insertCliente(String dni, String nombre, String apellido, String direccion,String nroCte, String estadoCivil,Connection connection){
     	try{
-    		// Load database driver if not already loaded.
-      		Class.forName(driver);
-
-      		// Establish network connection to database.
-      		Connection connection =	DriverManager.getConnection(url,"root","root");
-      		connection.setAutoCommit(false); 
-      		return connection;
-      	}
-      	catch(ClassNotFoundException cnfe) {
-      		System.err.println("Error loading driver: " + cnfe);
-      		System.exit(1);
-      		return null;
-      	}
-      	catch(SQLException e){
-      		throw new SQLException(e);
-      	}
-    }
-
-
-    public void insertCliente(String dni,String nroCte, String estadoCivil,Connection connection){
-    	try{
-    		String query = "INSERT INTO Cliente(dni_cliente,nro_cliente,estadoCivil) VALUES(?,?,?);";
+				String query = "INSERT INTO Persona(dni,nombre,apellido,direccion) VALUES(?,?,?,?);";
+				PreparedStatement s = connection.prepareStatement(query);
+				s.setString(1,dni);
+				s.setString(2,nombre);
+				s.setString(3,apellido);
+				s.setString(4,direccion);
+    		query = "INSERT INTO Cliente(dni_cliente,nro_cliente,estadoCivil) VALUES(?,?,?);";
     		PreparedStatement statement = connection.prepareStatement(query);
-      		// Send query to database and store results.
-      		statement.setString(1,dni);
-      		statement.setString(2,nroCte);
-      		statement.setString(3,estadoCivil);
-      		statement.executeUpdate();
+      	// Send query to database and store results.
+      	statement.setString(1,dni);
+      	statement.setString(2,nroCte);
+      	statement.setString(3,estadoCivil);
+      	statement.executeUpdate();
     		connection.commit();
     	}
     	catch(Exception e){
@@ -84,19 +105,20 @@ public class BaseJava {
     	}
     }
     public static void main(String[] args) {
-    		String driver = "org.gjt.mm.mysql.Driver";
-    		String url = "jdbc:mysql://localhost:3306/database_Proyect";
     		try{
-    			BaseJava base = new BaseJava(url,driver);
-    			Connection con = base.setUpConnection(url,driver);
+    			BaseJava base = new BaseJava("Base_De_Datos/");
+    			Connection con = base.setUpConnection();
     			System.out.println("OK");
     			//base.insertCliente("2","23","SOLTERO",con);
 	    		//base.deleteCliente("2",con);
 	    		base.listMucamas(con);
 	    	}
 	    	catch(SQLException e){
-	    		System.out.println("Error " + e);
+	    		System.err.println("Error " + e);
 	    	}
+				catch(IOException ex){
+					System.err.println("Error " + ex);
+				}
     }
 
 
