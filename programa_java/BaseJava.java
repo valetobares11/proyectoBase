@@ -1,3 +1,4 @@
+package programa_java;
 import java.sql.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,11 +28,11 @@ public class BaseJava {
 
   public Connection setUpConnection() throws SQLException{
   	try{
-  		// Load database driver if not already loaded.
-  		Class.forName(this.driver);
-  		// Establish network connection to database.
-  		Connection connection =	DriverManager.getConnection(this.url,this.username,this.password);
-  		connection.setAutoCommit(false);
+  			// Load database driver if not already loaded.
+  			Class.forName(this.driver);
+  			// Establish network connection to database.
+  			Connection connection =	DriverManager.getConnection(this.url,this.username,this.password);
+  			connection.setAutoCommit(false);
   			return connection;
       }
       catch(ClassNotFoundException cnfe) {
@@ -46,31 +47,34 @@ public class BaseJava {
 
 
 
-    public void insertCliente(int dni, String nombre, String apellido, String direccion,int nroCte, String estadoCivil,Connection connection){
-    	try{
-				String query1 = "INSERT INTO Persona(dni,nombre,apellido,direccion) VALUES(?,?,?,?);INSERT INTO Cliente(dni_cliente,nro_cliente,estadoCivil) VALUES(?,?,?);";
-				PreparedStatement s = connection.prepareStatement(query1);
-				s.setInt(1,dni);
-				s.setString(2,nombre);
-				s.setString(3,apellido);
-				s.setString(4,direccion);
-      	s.setInt(5,dni);
-      	s.setInt(6,nroCte);
-      	s.setString(7,estadoCivil);
-      	s.executeUpdate();
-    		connection.commit();
-    	}
-    	catch(Exception e){
-    		System.out.println("ERROR" + e);
-    	}
-    }
+	public void insertCliente(String dni, String nombre, String apellido, String direccion,String nroCte, String estadoCivil,Connection connection){
+		try{
+			String query1 = "INSERT INTO Persona(dni,nombre,apellido,direccion) VALUES(?,?,?,?);";
+			PreparedStatement s = connection.prepareStatement(query1);
+			s.setString(1,dni);
+			s.setString(2,nombre);
+			s.setString(3,apellido);
+			s.setString(4,direccion);
+			s.executeUpdate();
+			query1 = "INSERT INTO Cliente(dni_cliente,nro_cliente,estadoCivil) VALUES(?,?,?);";
+			s = connection.prepareStatement(query1);
+			s.setString(1,dni);
+			s.setString(2,nroCte);
+			s.setString(3,estadoCivil);
+			s.executeUpdate();
+			connection.commit();
+		}
+		catch(Exception e){
+			System.out.println("ERROR" + e);
+		}
+	}
     public void deleteCliente(String dni,Connection connection){
     	try{
     		String query = "DELETE FROM Cliente WHERE dni_cliente = ?;";
     		PreparedStatement statement = connection.prepareStatement(query);
     			statement.setString(1,dni);
     			statement.executeUpdate();
-    			connection.commit();
+					connection.commit();
     		}
     	catch(Exception e){
     		System.out.println("ERROR" + e);
