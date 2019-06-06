@@ -45,21 +45,19 @@ public class BaseJava {
   }
 
 
-    public void insertCliente(String dni, String nombre, String apellido, String direccion,String nroCte, String estadoCivil,Connection connection){
+
+    public void insertCliente(int dni, String nombre, String apellido, String direccion,int nroCte, String estadoCivil,Connection connection){
     	try{
-				String query = "INSERT INTO Persona(dni,nombre,apellido,direccion) VALUES(?,?,?,?);";
-				PreparedStatement s = connection.prepareStatement(query);
-				s.setString(1,dni);
+				String query1 = "INSERT INTO Persona(dni,nombre,apellido,direccion) VALUES(?,?,?,?);INSERT INTO Cliente(dni_cliente,nro_cliente,estadoCivil) VALUES(?,?,?);";
+				PreparedStatement s = connection.prepareStatement(query1);
+				s.setInt(1,dni);
 				s.setString(2,nombre);
 				s.setString(3,apellido);
 				s.setString(4,direccion);
-    		query = "INSERT INTO Cliente(dni_cliente,nro_cliente,estadoCivil) VALUES(?,?,?);";
-    		PreparedStatement statement = connection.prepareStatement(query);
-      	// Send query to database and store results.
-      	statement.setString(1,dni);
-      	statement.setString(2,nroCte);
-      	statement.setString(3,estadoCivil);
-      	statement.executeUpdate();
+      	s.setInt(5,dni);
+      	s.setInt(6,nroCte);
+      	s.setString(7,estadoCivil);
+      	s.executeUpdate();
     		connection.commit();
     	}
     	catch(Exception e){
@@ -104,23 +102,4 @@ public class BaseJava {
     		System.out.println("ERROR" + e);
     	}
     }
-    public static void main(String[] args) {
-    		try{
-    			BaseJava base = new BaseJava("Base_De_Datos/");
-    			Connection con = base.setUpConnection();
-    			System.out.println("OK");
-    			//base.insertCliente("2","23","SOLTERO",con);
-	    		//base.deleteCliente("2",con);
-	    		base.listMucamas(con);
-	    	}
-	    	catch(SQLException e){
-	    		System.err.println("Error " + e);
-	    	}
-				catch(IOException ex){
-					System.err.println("Error " + ex);
-				}
-    }
-
-
-
 }
