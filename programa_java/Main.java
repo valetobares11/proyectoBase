@@ -6,8 +6,8 @@ public class Main{
 	public static void main(String[] args){
 		try{
 	   		Scanner sn = new Scanner(System.in);
-       		boolean salir = false;
-       		String opcion; //Guardaremos la opcion del usuario
+       	boolean salir = false;
+       	String opcion; //Guardaremos la opcion del usuario
   			BaseJava base = new BaseJava("Base_De_Datos/");
   			Connection connection= base.setUpConnection();
 
@@ -67,9 +67,15 @@ public class Main{
      	}
      	catch(SQLException e){
      		System.err.println(""+e);
+				System.exit(1);
      	}
      	catch(IOException ex){
      		System.err.println(""+ex);
+				System.exit(1);
      	}
+			catch(ClassNotFoundException cnfe){
+				System.err.println("Error loading driver: " + cnfe);
+				System.exit(1);
+			}
     }
 }

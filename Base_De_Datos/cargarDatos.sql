@@ -15,12 +15,12 @@ VALUES
 INSERT INTO Cliente(dni_Cliente,nro_Cliente,estadoCivil)
 VALUES
 (2,1,'SOLTERO'),
-(5,2,'CASADO');
+(5,2,'CASADO'),
+(3,3,'DIVORCIADO');
 
 INSERT INTO Mucama(dni_Mucama)
 VALUES
-(3),
-(2);
+(3);
 
 INSERT INTO Gerente(dni_Gerente,comision)
 VALUES
@@ -34,20 +34,22 @@ VALUES
 
 INSERT INTO Habitacion(dni_Muca,co_Tipo,cantCamas)
 VALUES
-(3,1,5),
+(3,3,5),
 (3,2,8);
 
 INSERT INTO Fecha(dia)
 VALUES
-('2019-05-06'),
-('2019-05-05'),
-('2009-05-05');
+('2013-01-01'),
+('2013-12-31'),
+('2017-12-31'),
+('2017-01-01');
 
 INSERT INTO Alquila(dia_alq,nro_hab,monto,cantDias,dni_Cte)
 VALUES
-('2019-05-06',1,2000,2,2),
-('2019-05-05',2,4500,3,5),
-('2009-05-05',2,4500,3,5);
+('2013-01-01',1,2000,2,2),
+('2013-12-31',2,5000,2,2),
+('2017-12-31',2,4500,3,5),
+('2017-01-01',2,4500,3,5);
 
 UPDATE Tipo
 SET costo = 5000 WHERE true;

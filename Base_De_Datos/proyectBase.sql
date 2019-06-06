@@ -1,7 +1,7 @@
 drop database database_Proyect;
 CREATE DATABASE IF NOT EXISTS database_Proyect;
 
-use database_Proyect;
+USE database_Proyect;
 
 CREATE TABLE IF NOT EXISTS Persona(
 dni INT(10) NOT NULL PRIMARY KEY,
